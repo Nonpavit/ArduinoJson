@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "../JsonArray.hpp"
+#include "../JsonObject.hpp"
 #include "../JsonVariant.hpp"
 #include "../StringTraits/StringTraits.hpp"
 #include "../TypeTraits/EnableIf.hpp"
@@ -45,6 +47,15 @@ struct ValueSetter<TSourceRef, typename TypeTraits::EnableIf<!StringTraits<
     // unsigned char* -> char*
     destination = reinterpret_cast<const char*>(source);
     return true;
+  }
+};
+
+template <>
+struct ValueSetter<const JsonVariant&, void> {
+  template <typename TDestination>
+  static bool set(JsonBuffer* buffer, TDestination& destination,
+                  const JsonVariant& source) {
+    return destination.clone(buffer, source);
   }
 };
 }

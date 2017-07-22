@@ -8,7 +8,7 @@
 #include <ArduinoJson.h>
 #include <catch.hpp>
 
-void checkIsArray(const DynamicJsonVariant& var) {
+void checkIsArray(const JsonVariant& var) {
   REQUIRE(var.is<JsonArray>());
   REQUIRE(var.is<JsonArray&>());
   REQUIRE(var.is<const JsonArray>());
@@ -23,7 +23,7 @@ void checkIsArray(const DynamicJsonVariant& var) {
   REQUIRE_FALSE(var.is<JsonObject>());
 }
 
-void checkIsBool(const DynamicJsonVariant& var) {
+void checkIsBool(const JsonVariant& var) {
   REQUIRE(var.is<bool>());
 
   REQUIRE_FALSE(var.is<double>());
@@ -35,7 +35,7 @@ void checkIsBool(const DynamicJsonVariant& var) {
   REQUIRE_FALSE(var.is<JsonObject>());
 }
 
-void checkIsFloat(const DynamicJsonVariant& var) {
+void checkIsFloat(const JsonVariant& var) {
   REQUIRE(var.is<double>());
   REQUIRE(var.is<float>());
 
@@ -47,7 +47,7 @@ void checkIsFloat(const DynamicJsonVariant& var) {
   REQUIRE_FALSE(var.is<JsonObject>());
 }
 
-void checkIsInteger(const DynamicJsonVariant& var) {
+void checkIsInteger(const JsonVariant& var) {
   REQUIRE(var.is<long>());
   REQUIRE(var.is<int>());
   REQUIRE(var.is<float>());
@@ -59,7 +59,7 @@ void checkIsInteger(const DynamicJsonVariant& var) {
   REQUIRE_FALSE(var.is<JsonObject>());
 }
 
-void checkIsString(const DynamicJsonVariant& var) {
+void checkIsString(const JsonVariant& var) {
   REQUIRE(var.is<const char*>());
 
   REQUIRE_FALSE(var.is<bool>());

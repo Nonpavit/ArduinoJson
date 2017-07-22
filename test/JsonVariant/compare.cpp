@@ -9,7 +9,7 @@
 #include <catch.hpp>
 
 template <typename T>
-void checkEquals(const DynamicJsonVariant& a, T b) {
+void checkEquals(const JsonVariant& a, T b) {
   REQUIRE(b == a);
   REQUIRE(a == b);
   REQUIRE(b <= a);
@@ -26,7 +26,7 @@ void checkEquals(const DynamicJsonVariant& a, T b) {
 }
 
 template <typename T>
-void checkGreater(const DynamicJsonVariant& a, T b) {
+void checkGreater(const JsonVariant& a, T b) {
   REQUIRE(a > b);
   REQUIRE(b < a);
   REQUIRE(a != b);
@@ -39,7 +39,7 @@ void checkGreater(const DynamicJsonVariant& a, T b) {
 }
 
 template <typename T>
-void checkLower(const DynamicJsonVariant& a, T b) {
+void checkLower(const JsonVariant& a, T b) {
   REQUIRE(a < b);
   REQUIRE(b > a);
   REQUIRE(a != b);
@@ -134,9 +134,9 @@ TEST_CASE("JsonVariant comparisons") {
   }
 
   SECTION("IntegerInVariant") {
-    DynamicJsonVariant variant1(42);
-    DynamicJsonVariant variant2 = 42;
-    DynamicJsonVariant variant3 = 666;
+    JsonVariant variant1(42);
+    JsonVariant variant2 = 42;
+    JsonVariant variant3 = 666;
 
     REQUIRE(variant1 == variant2);
     REQUIRE_FALSE(variant1 != variant2);
@@ -146,9 +146,9 @@ TEST_CASE("JsonVariant comparisons") {
   }
 
   SECTION("StringInVariant") {
-    DynamicJsonVariant variant1 = "0hello" + 1;  // make sure they have
-    DynamicJsonVariant variant2 = "1hello" + 1;  // different addresses
-    DynamicJsonVariant variant3 = "world";
+    JsonVariant variant1 = "0hello" + 1;  // make sure they have
+    JsonVariant variant2 = "1hello" + 1;  // different addresses
+    JsonVariant variant3 = "world";
 
     REQUIRE(variant1 == variant2);
     REQUIRE_FALSE(variant1 != variant2);
@@ -158,9 +158,9 @@ TEST_CASE("JsonVariant comparisons") {
   }
 
   SECTION("DoubleInVariant") {
-    DynamicJsonVariant variant1 = 42.0;
-    DynamicJsonVariant variant2 = 42.0;
-    DynamicJsonVariant variant3 = 666.0;
+    JsonVariant variant1 = 42.0;
+    JsonVariant variant2 = 42.0;
+    JsonVariant variant3 = 666.0;
 
     REQUIRE(variant1 == variant2);
     REQUIRE_FALSE(variant1 != variant2);
@@ -170,9 +170,9 @@ TEST_CASE("JsonVariant comparisons") {
   }
 
   SECTION("BoolInVariant") {
-    DynamicJsonVariant variant1 = true;
-    DynamicJsonVariant variant2 = true;
-    DynamicJsonVariant variant3 = false;
+    JsonVariant variant1 = true;
+    JsonVariant variant2 = true;
+    JsonVariant variant3 = false;
 
     REQUIRE(variant1 == variant2);
     REQUIRE_FALSE(variant1 != variant2);
@@ -187,9 +187,9 @@ TEST_CASE("JsonVariant comparisons") {
       DynamicJsonArray array1;
       DynamicJsonArray array2;
 
-      DynamicJsonVariant variant1 = array1;
-      DynamicJsonVariant variant2 = array1;
-      DynamicJsonVariant variant3 = array2;
+      JsonVariant variant1 = array1;
+      JsonVariant variant2 = array1;
+      JsonVariant variant3 = array2;
 
       REQUIRE(variant1 == variant2);
       REQUIRE_FALSE(variant1 != variant2);
@@ -203,9 +203,9 @@ TEST_CASE("JsonVariant comparisons") {
       DynamicJsonObject obj1;
       DynamicJsonObject obj2;
 
-      DynamicJsonVariant variant1 = obj1;
-      DynamicJsonVariant variant2 = obj1;
-      DynamicJsonVariant variant3 = obj2;
+      JsonVariant variant1 = obj1;
+      JsonVariant variant2 = obj1;
+      JsonVariant variant3 = obj2;
 
       REQUIRE(variant1 == variant2);
       REQUIRE_FALSE(variant1 != variant2);
@@ -217,7 +217,7 @@ TEST_CASE("JsonVariant comparisons") {
   SECTION("VariantsOfDifferentTypes") {
     DynamicJsonArray array;
     DynamicJsonObject object;
-    DynamicJsonVariant variants[] = {
+    JsonVariant variants[] = {
         true, 42, 666.667, "hello", array, object,
     };
     size_t n = sizeof(variants) / sizeof(variants[0]);

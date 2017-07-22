@@ -58,7 +58,7 @@ inline bool ArduinoJson::Internals::JsonParser<TReader, TWriter>::parse(
   // Read each value
   for (;;) {
     // 1 - Parse value
-    JsonVariant value(_buffer);
+    JsonVariant value;
     if (!parseAnythingTo(&value)) goto ERROR_INVALID_VALUE;
     if (!array.add(value)) goto ERROR_NO_MEMORY;
 
@@ -93,7 +93,7 @@ inline bool ArduinoJson::Internals::JsonParser<TReader, TWriter>::parse(
     if (!eat(':')) goto ERROR_MISSING_COLON;
 
     // 2 - Parse value
-    JsonVariant value(_buffer);
+    JsonVariant value;
     if (!parseAnythingTo(&value)) goto ERROR_INVALID_VALUE;
     if (!object.set(key, value)) goto ERROR_NO_MEMORY;
 

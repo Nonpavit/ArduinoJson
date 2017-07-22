@@ -20,50 +20,53 @@
 
 namespace ArduinoJson {
 
-inline JsonVariant &JsonVariant::operator=(const JsonArray &array) {
-  if (!array.success()) goto fail;
-
-  _content.asArray = new (_buffer) JsonArray(_buffer);
-  if (!_content.asArray) goto fail;
-
-  _content.asArray->operator=(array);
-
-  _type = Internals::JSON_ARRAY;
-  return *this;
-
-fail:
-  _type = Internals::JSON_UNDEFINED;
-  return *this;
+inline bool JsonVariant::clone(Internals::JsonBuffer *buffer,
+                               const JsonVariant &source) {
+  if (source.is<JsonArray>()) return clone(buffer, source.as<JsonArray>());
+  if (source.is<JsonObject>()) return clone(buffer, source.as<JsonObject>());
+  _content = source._content;
+  _type = source._type;
+  return true;
 }
 
-inline JsonVariant &JsonVariant::operator=(const JsonObject &object) {
-  if (!object.success()) goto fail;
+inline bool JsonVariant::clone(Internals::JsonBuffer *buffer,
+                               const JsonObject &source) {
+  if (!source.success()) return false;
 
-  _content.asObject = new (_buffer) JsonObject(_buffer);
-  if (!_content.asObject) goto fail;
+  JsonObject *obj = new (buffer) JsonObject(buffer);
+  if (!obj) return false;
 
-  _content.asObject->operator=(object);
+  obj->operator=(source);
 
+  _content.asObject = obj;
   _type = Internals::JSON_OBJECT;
-  return *this;
 
-fail:
-  _type = Internals::JSON_UNDEFINED;
-  return *this;
+  return true;
 }
 
-template <typename T>
-inline JsonVariant &JsonVariant::operator=(const JsonVariantBase<T> &variant) {
-  return operator=(variant.template as<JsonVariant>());
+inline bool JsonVariant::clone(Internals::JsonBuffer *buffer,
+                               const JsonArray &source) {
+  if (!source.success()) return false;
+
+  JsonArray *arr = new (buffer) JsonArray(buffer);
+  if (!arr) return false;
+
+  arr->operator=(source);
+
+  _content.asArray = arr;
+  _type = Internals::JSON_ARRAY;
+
+  return true;
 }
 
-inline JsonVariant &JsonVariant::operator=(const JsonVariant &variant) {
-  using namespace Internals;
-  if (variant.is<JsonArray>()) return operator=(variant.as<JsonArray>());
-  if (variant.is<JsonObject>()) return operator=(variant.as<JsonObject>());
-  _content = variant._content;
-  _type = variant._type;
-  return *this;
+inline JsonVariant::JsonVariant(const JsonObject &obj) {
+  _content.asObject = const_cast<JsonObject *>(&obj);
+  _type = Internals::JSON_OBJECT;
+}
+
+inline JsonVariant::JsonVariant(const JsonArray &arr) {
+  _content.asArray = const_cast<JsonArray *>(&arr);
+  _type = Internals::JSON_ARRAY;
 }
 
 inline JsonArray &JsonVariant::variantAsArray() const {

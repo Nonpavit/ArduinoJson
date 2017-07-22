@@ -11,7 +11,6 @@
 #include "Data/JsonBufferAllocated.hpp"
 #include "Data/List.hpp"
 #include "Data/ReferenceType.hpp"
-#include "Data/ValueSetter.hpp"
 #include "JsonPair.hpp"
 #include "Serialization/JsonPrintable.hpp"
 #include "StringTraits/StringTraits.hpp"
@@ -291,18 +290,7 @@ class JsonObject : public Internals::JsonPrintable<JsonObject>,
   }
 
   template <typename TStringRef, typename TValueRef>
-  bool set_impl(TStringRef key, TValueRef value) {
-    iterator it = findKey<TStringRef>(key);
-    if (it == end()) {
-      it = Internals::List<JsonPair>::add();
-      if (it == end()) return false;
-
-      bool key_ok =
-          Internals::ValueSetter<TStringRef>::set(_buffer, it->key, key);
-      if (!key_ok) return false;
-    }
-    return Internals::ValueSetter<TValueRef>::set(_buffer, it->value, value);
-  }
+  bool set_impl(TStringRef key, TValueRef value);
 
   template <typename TStringRef, typename TValue>
   bool is_impl(TStringRef key) const {

@@ -11,7 +11,6 @@
 #include "Data/JsonBufferAllocated.hpp"
 #include "Data/List.hpp"
 #include "Data/ReferenceType.hpp"
-#include "Data/ValueSetter.hpp"
 #include "JsonVariant.hpp"
 #include "Serialization/JsonPrintable.hpp"
 #include "StringTraits/StringTraits.hpp"
@@ -195,18 +194,10 @@ class JsonArray : public Internals::JsonPrintable<JsonArray>,
 
  private:
   template <typename TValueRef>
-  bool set_impl(size_t index, TValueRef value) {
-    iterator it = begin() += index;
-    if (it == end()) return false;
-    return Internals::ValueSetter<TValueRef>::set(_buffer, *it, value);
-  }
+  bool set_impl(size_t index, TValueRef value);
 
   template <typename TValueRef>
-  bool add_impl(TValueRef value) {
-    iterator it = Internals::List<JsonVariant>::add();
-    if (it == end()) return false;
-    return Internals::ValueSetter<TValueRef>::set(_buffer, *it, value);
-  }
+  bool add_impl(TValueRef value);
 };
 
 namespace Internals {

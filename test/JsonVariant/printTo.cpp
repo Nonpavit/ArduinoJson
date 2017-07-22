@@ -9,7 +9,7 @@
 #include <catch.hpp>
 #include <limits>
 
-void check(const DynamicJsonVariant &variant, const std::string &expected) {
+void check(const JsonVariant &variant, const std::string &expected) {
   char buffer[256] = "";
   size_t returnValue = variant.printTo(buffer, sizeof(buffer));
   REQUIRE(expected == buffer);

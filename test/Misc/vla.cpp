@@ -91,7 +91,7 @@ TEST_CASE("Variable Length Array") {
     SECTION("operator[](char[n])") {
       DynamicJsonObject object;
       object["hello"] = "world";
-      DynamicJsonVariant variant = object;
+      JsonVariant variant = object;
 
       int i = 16;
       char vla[i];
@@ -105,7 +105,7 @@ TEST_CASE("Variable Length Array") {
     SECTION("operator[](char[n]) const") {
       DynamicJsonObject object;
       object["hello"] = "world";
-      DynamicJsonVariant variant = object;
+      JsonVariant variant = object;
 
       int i = 16;
       char vla[i];
@@ -120,7 +120,7 @@ TEST_CASE("Variable Length Array") {
       char vla[i];
       strcpy(vla, "hello");
 
-      const DynamicJsonVariant variant = "hello";
+      const JsonVariant variant = "hello";
 
       REQUIRE((vla == variant));
       REQUIRE((variant == vla));
@@ -133,7 +133,7 @@ TEST_CASE("Variable Length Array") {
       char vla[i];
       strcpy(vla, "hello");
 
-      const DynamicJsonVariant variant = "world";
+      const JsonVariant variant = "world";
 
       REQUIRE((vla != variant));
       REQUIRE((variant != vla));

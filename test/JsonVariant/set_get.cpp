@@ -12,7 +12,7 @@
 
 template <typename T>
 void checkValue(T expected) {
-  DynamicJsonVariant variant = expected;
+  JsonVariant variant = expected;
   REQUIRE(expected == variant.as<T>());
 }
 

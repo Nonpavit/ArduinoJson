@@ -49,7 +49,7 @@ class List {
   }
 
   iterator add() {
-    node_type *newNode = new (_buffer) node_type(_buffer);
+    node_type *newNode = new (_buffer) node_type();
 
     if (_firstNode) {
       node_type *lastNode = _firstNode;
@@ -68,6 +68,7 @@ class List {
   iterator end() {
     return iterator(NULL);
   }
+
 
   const_iterator begin() const {
     return const_iterator(_firstNode);

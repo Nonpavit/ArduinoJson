@@ -121,5 +121,8 @@ class JsonVariantBase : public Internals::JsonPrintable<TImpl>,
 namespace TypeTraits {
 template <typename T>
 struct IsVariant : IsBaseOf<JsonVariantTag, T> {};
+
+template <typename T>
+struct IsVariant<T &> : IsVariant<T> {};
 }
 }

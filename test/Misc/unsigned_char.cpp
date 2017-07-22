@@ -66,7 +66,7 @@ TEST_CASE("unsigned char string") {
 
       unsigned char key[] = "hello";
 
-      DynamicJsonVariant variant = object;
+      JsonVariant variant = object;
 
       REQUIRE(std::string("world") == variant[key]);
     }
@@ -79,7 +79,7 @@ TEST_CASE("unsigned char string") {
 
       unsigned char key[] = "hello";
 
-      const DynamicJsonVariant variant = object;
+      const JsonVariant variant = object;
 
       REQUIRE(std::string("world") == variant[key]);
     }
@@ -88,7 +88,7 @@ TEST_CASE("unsigned char string") {
     SECTION("operator==(unsigned char[]) const") {
       unsigned char comparand[] = "hello";
 
-      const DynamicJsonVariant variant = "hello";
+      const JsonVariant variant = "hello";
 
       REQUIRE(comparand == variant);
       REQUIRE(variant == comparand);
@@ -99,7 +99,7 @@ TEST_CASE("unsigned char string") {
     SECTION("operator!=(unsigned char[]) const") {
       unsigned char comparand[] = "hello";
 
-      const DynamicJsonVariant variant = "world";
+      const JsonVariant variant = "world";
 
       REQUIRE(comparand != variant);
       REQUIRE(variant != comparand);

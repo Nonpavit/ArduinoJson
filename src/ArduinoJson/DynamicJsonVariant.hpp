@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Data/DynamicJsonBuffer.hpp"
+#include "Data/ValueSetter.hpp"
 #include "JsonVariant.hpp"
 
 namespace ArduinoJson {
@@ -16,28 +17,27 @@ class DynamicJsonVariant : public JsonVariant {
   Internals::DynamicJsonBuffer _buffer;
 
  public:
-  DynamicJsonVariant() : JsonVariant(&_buffer) {}
+  DynamicJsonVariant() {}
 
-  DynamicJsonVariant(const DynamicJsonVariant& other) : JsonVariant(&_buffer) {
-    JsonVariant::operator=(other);
+  DynamicJsonVariant(const DynamicJsonVariant& other) : JsonVariant() {
+    clone(&_buffer, other);
   }
 
-  template <typename T>
-  DynamicJsonVariant(const T& value) : JsonVariant(&_buffer) {
-    JsonVariant::operator=(value);
-  }
-
-  template <typename T>
-  DynamicJsonVariant(const T* value) : JsonVariant(&_buffer) {
-    JsonVariant::operator=(value);
+  DynamicJsonVariant(const JsonVariant& value) {
+    clone(&_buffer, value);
   }
 
   DynamicJsonVariant& operator=(const DynamicJsonVariant& other) {
-    JsonVariant::operator=(other);
+    // _buffer.clear();  // TODO
+    clone(&_buffer, other);
     return *this;
   }
 
-  using JsonVariant::operator=;
+  DynamicJsonVariant& operator=(const JsonVariant& value) {
+    // _buffer.clear();  // TODO
+    clone(&_buffer, value);
+    return *this;
+  }
 
   Internals::DynamicJsonBuffer& buffer() {
     return _buffer;

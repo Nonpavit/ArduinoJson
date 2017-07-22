@@ -13,7 +13,7 @@ namespace Internals {
 template <typename T>
 struct JsonVariantDefault {
   static T get() {
-    return T(0);
+    return T();
   }
 };
 
