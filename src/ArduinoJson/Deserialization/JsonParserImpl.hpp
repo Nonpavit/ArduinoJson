@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "../Polyfills/Move.hpp"
 #include "Comments.hpp"
 #include "JsonParser.hpp"
 
@@ -51,6 +52,8 @@ ArduinoJson::Internals::JsonParser<TReader, TWriter>::parseAnythingToUnsafe(
 template <typename TReader, typename TWriter>
 inline bool ArduinoJson::Internals::JsonParser<TReader, TWriter>::parse(
     JsonArray &array) {
+  using namespace Polyfills;
+
   // Check opening braket
   if (!eat('[')) goto ERROR_MISSING_BRACKET;
   if (eat(']')) goto SUCCESS_EMPTY_ARRAY;
@@ -60,7 +63,7 @@ inline bool ArduinoJson::Internals::JsonParser<TReader, TWriter>::parse(
     // 1 - Parse value
     JsonVariant value;
     if (!parseAnythingTo(&value)) goto ERROR_INVALID_VALUE;
-    if (!array.add(value)) goto ERROR_NO_MEMORY;
+    if (!array.add(move(value))) goto ERROR_NO_MEMORY;
 
     // 2 - More values?
     if (eat(']')) goto SUCCES_NON_EMPTY_ARRAY;
@@ -81,6 +84,8 @@ ERROR_NO_MEMORY:
 template <typename TReader, typename TWriter>
 inline bool ArduinoJson::Internals::JsonParser<TReader, TWriter>::parse(
     JsonObject &object) {
+  using namespace Polyfills;
+
   // Check opening brace
   if (!eat('{')) goto ERROR_MISSING_BRACE;
   if (eat('}')) goto SUCCESS_EMPTY_OBJECT;
@@ -95,7 +100,7 @@ inline bool ArduinoJson::Internals::JsonParser<TReader, TWriter>::parse(
     // 2 - Parse value
     JsonVariant value;
     if (!parseAnythingTo(&value)) goto ERROR_INVALID_VALUE;
-    if (!object.set(key, value)) goto ERROR_NO_MEMORY;
+    if (!object.set(key, move(value))) goto ERROR_NO_MEMORY;
 
     // 3 - More keys/values?
     if (eat('}')) goto SUCCESS_NON_EMPTY_OBJECT;
@@ -126,7 +131,7 @@ inline bool ArduinoJson::Internals::JsonParser<TReader, TWriter>::parseArrayTo(
     JsonVariant *destination) {
   JsonArray *array = new (_buffer) JsonArray(_buffer);
   if (!array) return false;
-  *destination = array;
+  *destination = *array;
   return parse(*array);
 }
 
@@ -135,7 +140,7 @@ inline bool ArduinoJson::Internals::JsonParser<TReader, TWriter>::parseObjectTo(
     JsonVariant *destination) {
   JsonObject *object = new (_buffer) JsonObject(_buffer);
   if (!object) return false;
-  *destination = object;
+  *destination = *object;
   return parse(*object);
 }
 

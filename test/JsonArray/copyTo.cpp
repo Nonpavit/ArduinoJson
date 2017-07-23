@@ -37,7 +37,7 @@ TEST_CASE("JsonArray::copyTo()") {
     REQUIRE(2 == destination[1]);
   }
 
-  SECTION("TwoOneDimensionIntegerArray") {
+  SECTION("2D int array") {
     char json[] = "[[1,2],[3],[4]]";
 
     parseJson(array, json);

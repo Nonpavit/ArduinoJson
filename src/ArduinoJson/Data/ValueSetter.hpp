@@ -10,6 +10,7 @@
 #include "../JsonArray.hpp"
 #include "../JsonObject.hpp"
 #include "../JsonVariant.hpp"
+#include "../Polyfills/Move.hpp"
 #include "../StringTraits/StringTraits.hpp"
 #include "../TypeTraits/EnableIf.hpp"
 #include "JsonBuffer.hpp"
@@ -56,6 +57,16 @@ struct ValueSetter<const JsonVariant&, void> {
   static bool set(JsonBuffer* buffer, TDestination& destination,
                   const JsonVariant& source) {
     return destination.clone(buffer, source);
+  }
+};
+
+template <typename T>
+struct ValueSetter<const Polyfills::Moving<T>&, void> {
+  template <typename TDestination>
+  static bool set(JsonBuffer*, TDestination& destination,
+                  const Polyfills::Moving<T>& source) {
+    destination = source;
+    return true;
   }
 };
 }
