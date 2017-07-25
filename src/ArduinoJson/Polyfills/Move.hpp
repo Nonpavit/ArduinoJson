@@ -21,6 +21,8 @@ class Moving {
 
  private:
   T& _ref;
+
+  Moving<T>& operator=(const Moving<T>&);
 };
 
 template <typename T>
