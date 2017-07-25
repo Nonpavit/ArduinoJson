@@ -43,7 +43,7 @@ class JsonObject : public Internals::JsonPrintable<JsonObject>,
     clear();
     for (JsonObject::const_iterator it = other.begin(); it != other.end();
          ++it) {
-      set(it->key, it->value);
+      set(_buffer->strdup(it->key), it->value);
     }
     return *this;
   }

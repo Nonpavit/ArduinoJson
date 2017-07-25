@@ -8,12 +8,13 @@
 #include <ArduinoJson.h>
 #include <catch.hpp>
 
-static const size_t SIZE = JSON_OBJECT_SIZE(2) + JSON_ARRAY_SIZE(1) + 6;
+// TODO: change the magic constant
+static const size_t SIZE = JSON_OBJECT_SIZE(2) + JSON_ARRAY_SIZE(1) + 22;
 
 template <typename TObject>
 TObject buildObject() {
   TObject object;
-  object["number"] = 42;
+  object[std::string("number")] = 42;
   object.createNestedArray("hello").add("world");
   return object;
 }

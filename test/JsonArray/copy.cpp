@@ -8,7 +8,8 @@
 #include <ArduinoJson.h>
 #include <catch.hpp>
 
-static const size_t SIZE = JSON_ARRAY_SIZE(2) + JSON_OBJECT_SIZE(1) + 6;
+// TODO: replace magic value
+static const size_t SIZE = JSON_ARRAY_SIZE(2) + JSON_OBJECT_SIZE(1) + 14;
 
 template <typename TArray>
 TArray buildArray() {
