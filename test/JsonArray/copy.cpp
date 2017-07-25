@@ -8,11 +8,13 @@
 #include <ArduinoJson.h>
 #include <catch.hpp>
 
+static const size_t SIZE = JSON_ARRAY_SIZE(2) + JSON_OBJECT_SIZE(1) + 6;
+
 template <typename TArray>
 TArray buildArray() {
   TArray array;
   array.add(42);
-  array.createNestedObject()["hello"] = "world";
+  array.createNestedObject()["hello"] = std::string("world");
   return array;
 }
 
@@ -23,8 +25,7 @@ void validateArray(TArray& array) {
   REQUIRE(array[1].template is<JsonObject>());
   REQUIRE(array[1]["hello"] == std::string("world"));
 
-  const int expectedSize = JSON_ARRAY_SIZE(2) + JSON_OBJECT_SIZE(1);
-  REQUIRE(expectedSize == array.memoryUsage());
+  REQUIRE(SIZE == array.memoryUsage());
 }
 
 TEST_CASE("DynamicJsonArray::operator=()") {
@@ -38,14 +39,12 @@ TEST_CASE("DynamicJsonArray::operator=()") {
   }
 
   SECTION("operator=(const StaticJsonArray<N>&)") {
-    const size_t SIZE = JSON_ARRAY_SIZE(2) + JSON_OBJECT_SIZE(1);
     array = buildArray<StaticJsonArray<SIZE> >();
     validateArray(array);
   }
 }
 
 TEST_CASE("StaticJsonArray::operator=()") {
-  const size_t SIZE = JSON_ARRAY_SIZE(2) + JSON_OBJECT_SIZE(1);
   StaticJsonArray<SIZE> array;
   array.add(666);
   array.add(666);

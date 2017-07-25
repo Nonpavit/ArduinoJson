@@ -321,6 +321,7 @@ class JsonVariant : public JsonVariantBase<JsonVariant> {
   bool clone(Internals::JsonBuffer *buffer, const JsonVariant &source);
   bool clone(Internals::JsonBuffer *buffer, const JsonObject &source);
   bool clone(Internals::JsonBuffer *buffer, const JsonArray &source);
+  bool clone(Internals::JsonBuffer *buffer, const char *source);
 
  private:
   JsonArray &variantAsArray() const;
@@ -351,14 +352,4 @@ class JsonVariant : public JsonVariantBase<JsonVariant> {
   // The various alternatives for the value of the variant.
   Internals::JsonVariantContent _content;
 };
-
-DEPRECATED("Decimal places are ignored, use the float value instead")
-inline JsonVariant float_with_n_digits(float value, uint8_t) {
-  return JsonVariant(value);
-}
-
-DEPRECATED("Decimal places are ignored, use the double value instead")
-inline JsonVariant double_with_n_digits(double value, uint8_t) {
-  return JsonVariant(value);
-}
 }

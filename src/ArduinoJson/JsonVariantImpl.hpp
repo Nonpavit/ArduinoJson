@@ -24,6 +24,8 @@ inline bool JsonVariant::clone(Internals::JsonBuffer *buffer,
                                const JsonVariant &source) {
   if (source.is<JsonArray>()) return clone(buffer, source.as<JsonArray>());
   if (source.is<JsonObject>()) return clone(buffer, source.as<JsonObject>());
+  if (source.is<const char *>())
+    return clone(buffer, source.as<const char *>());
   _content = source._content;
   _type = source._type;
   return true;
@@ -56,6 +58,13 @@ inline bool JsonVariant::clone(Internals::JsonBuffer *buffer,
   _content.asArray = arr;
   _type = Internals::JSON_ARRAY;
 
+  return true;
+}
+
+inline bool JsonVariant::clone(Internals::JsonBuffer *buffer,
+                               const char *source) {
+  _content.asString = buffer->strdup(source);
+  _type = Internals::JSON_STRING;
   return true;
 }
 

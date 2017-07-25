@@ -8,6 +8,8 @@
 #include <ArduinoJson.h>
 #include <catch.hpp>
 
+static const size_t SIZE = JSON_OBJECT_SIZE(2) + JSON_ARRAY_SIZE(1) + 6;
+
 template <typename TObject>
 TObject buildObject() {
   TObject object;
@@ -23,8 +25,7 @@ void validateObject(TObject& object) {
   REQUIRE(object["hello"].template is<JsonArray>());
   REQUIRE(object["hello"][0] == std::string("world"));
 
-  const int expectedSize = JSON_OBJECT_SIZE(2) + JSON_ARRAY_SIZE(1);
-  REQUIRE(expectedSize == object.memoryUsage());
+  REQUIRE(SIZE == object.memoryUsage());
 }
 
 TEST_CASE("DynamicJsonObject::operator=()") {
@@ -37,14 +38,12 @@ TEST_CASE("DynamicJsonObject::operator=()") {
   }
 
   SECTION("operator=(const StaticJsonObject<N>&)") {
-    const size_t SIZE = JSON_OBJECT_SIZE(2) + JSON_ARRAY_SIZE(1);
     object = buildObject<StaticJsonObject<SIZE> >();
     validateObject(object);
   }
 }
 
 TEST_CASE("StaticJsonObject::operator=()") {
-  const size_t SIZE = JSON_OBJECT_SIZE(2) + JSON_ARRAY_SIZE(1);
   StaticJsonObject<SIZE> object;
   object["erase"] = "me";
 
