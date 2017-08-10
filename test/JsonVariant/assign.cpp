@@ -8,51 +8,45 @@
 #include <ArduinoJson.h>
 #include <catch.hpp>
 
-TEST_CASE("JsonVariant::operator=(const JsonVariant&)") {
-  DynamicJsonVariant variant1;
-  DynamicJsonVariant variant2;
+TEST_CASE("DynamicJsonVariant::operator=") {
+  DynamicJsonVariant variant;
 
-  SECTION("integer") {
-    variant1 = 123;
-    variant2 = variant1;
-    variant1 = 456;
+  SECTION("int") {
+    variant = 123;
 
-    REQUIRE(123 == variant2.as<int>());
+    REQUIRE(123 == variant.as<int>());
+    REQUIRE(sizeof(JsonVariant) == variant.memoryUsage());
   }
 
   SECTION("double") {
-    variant1 = 123.45;
-    variant2 = variant1;
-    variant1 = 456.78;
+    variant = 123.45;
 
-    REQUIRE(123.45 == variant2.as<double>());
+    REQUIRE(123.45 == variant.as<double>());
+    REQUIRE(sizeof(JsonVariant) == variant.memoryUsage());
   }
 
-  SECTION("boolean") {
-    variant1 = true;
-    variant2 = variant1;
-    variant1 = false;
+  SECTION("bool") {
+    variant = true;
 
-    REQUIRE(variant2.as<bool>());
+    REQUIRE(variant.as<bool>());
+    REQUIRE(sizeof(JsonVariant) == variant.memoryUsage());
   }
 
-  SECTION("char pointer") {
-    variant1 = "hello";
-    variant2 = variant1;
-    variant1 = "world";
+  SECTION("const char*") {
+    variant = "hello";
 
-    REQUIRE(std::string("hello") == variant2.as<const char*>());
+    REQUIRE(std::string("hello") == variant.as<const char*>());
+    REQUIRE(sizeof(JsonVariant) == variant.memoryUsage());
   }
 
   SECTION("string") {
-    std::string s("hello");
+    variant = std::string("hello");
 
-    variant1 = "hello";
-    variant2 = variant1;
-    variant1 = "world";
-
-    REQUIRE(std::string("hello") == variant2.as<std::string>());
+    REQUIRE(std::string("hello") == variant.as<std::string>());
+    REQUIRE(sizeof(JsonVariant) + 6 == variant.memoryUsage());
   }
+
+  // TODO: other variant
 
   SECTION("JsonObject") {
     DynamicJsonObject object;

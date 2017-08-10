@@ -39,6 +39,24 @@ class DynamicJsonVariant : public JsonVariant {
     return *this;
   }
 
+  template <typename T>
+  typename TypeTraits::EnableIf<!TypeTraits::IsArray<T>::value,
+                                DynamicJsonVariant&>::type
+  operator=(const T& src) {
+    _buffer.clear();
+    clone(&_buffer, value);
+    return *this;
+  }
+  template <typename TValue>
+  DynamicJsonVariant& operator=(const TValue* src) {
+    _object.set(_key, src);
+    return *this;
+  }
+
+  size_t memoryUsage() const {
+    return _buffer.size() + sizeof(JsonVariant);
+  }
+
   Internals::DynamicJsonBuffer& buffer() {
     return _buffer;
   }

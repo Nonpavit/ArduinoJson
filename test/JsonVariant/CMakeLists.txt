@@ -8,7 +8,7 @@
 add_executable(JsonVariantTests 
 	as.cpp
 	compare.cpp
-	copy.cpp
+	assign.cpp
 	is.cpp
 	printTo.cpp
 	set_get.cpp
